@@ -1,1 +1,1 @@
-# gerenc-entregas
+# Sistema de Gerenciamento de Entregas
