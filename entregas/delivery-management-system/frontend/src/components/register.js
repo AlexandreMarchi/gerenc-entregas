@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import './register.css'; // Importa o CSS
 
 const Register = () => {
@@ -67,6 +68,14 @@ const Register = () => {
       </form>
       {successMessage && <p className="success-message">{successMessage}</p>}
       {errorMessage && <p className="error-message">{errorMessage}</p>}
+      <div className="register-buttons">
+        <Link to="/">
+          <button className="back-button">Voltar ao Início</button>
+        </Link>
+        <Link to="/login">
+          <button className="login-button">Fazer Login</button>
+        </Link>
+      </div>
     </div>
   );
 };

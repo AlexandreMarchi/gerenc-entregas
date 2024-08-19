@@ -7,8 +7,7 @@
     border-radius: 5px;
     background-color: #f9f9f9;
   }
-  
-  /* Estilo para labels */
+
   label {
     display: block;
     margin-bottom: 15px;
@@ -55,5 +54,23 @@
     color: red;
     font-size: 14px;
     margin-top: 10px;
+  }
+
+  .register-buttons {
+    margin-top: 20px;
+  }
+  
+  .back-button, .login-button {
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .back-button:hover, .login-button:hover {
+    background-color: #0056b3;
   }
   
