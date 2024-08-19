@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Importa o hook useNavigate
+import { useNavigate } from 'react-router-dom';
 import './login.css';
 
 const Login = () => {
@@ -10,8 +10,7 @@ const Login = () => {
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
-  const navigate = useNavigate(); // Inicializa o hook useNavigate
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,6 +24,11 @@ const Login = () => {
       setSuccessMessage('Login realizado com sucesso!');
       setErrorMessage('');
       console.log(response.data);
+
+      // Navegar para uma página após o login bem-sucedido
+      setTimeout(() => {
+        navigate('/'); // Exemplo de redirecionamento para a tela principal
+      }, 2000); // 2 segundos de espera para o usuário visualizar a mensagem
     } catch (error) {
       setSuccessMessage('');
       setErrorMessage('CPF ou senha incorretos. Tente novamente.');
@@ -71,3 +75,4 @@ const Login = () => {
 };
 
 export default Login;
+

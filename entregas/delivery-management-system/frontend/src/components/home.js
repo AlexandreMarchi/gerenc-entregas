@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './home.css'; // Arquivo CSS para estilização
+import './home.css';
 
 const Home = () => {
   return (
