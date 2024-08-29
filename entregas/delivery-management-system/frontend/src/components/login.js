@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './login.css';
+import './style/login.css';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -23,16 +23,28 @@ const Login = () => {
       const response = await axios.post('http://localhost:5000/api/users/login', formData);
       setSuccessMessage('Login realizado com sucesso!');
       setErrorMessage('');
-      console.log(response.data);
 
-      // Navegar para uma página após o login bem-sucedido
+      const { token, role, name } = response.data;
+
+      // Armazena o token e nome no localStorage
+      localStorage.setItem('token', token);
+      localStorage.setItem('name', name);
+
+      console.log('Resposta do login:', response.data); // Loga a resposta do servidor
+
       setTimeout(() => {
-        navigate('/'); // Exemplo de redirecionamento para a tela principal
-      }, 2000); // 2 segundos de espera para o usuário visualizar a mensagem
+        if (role === 'entregador') {
+          navigate('/entregador');
+        } else {
+          navigate('/cliente');
+        }
+      }, 1500);
     } catch (error) {
       setSuccessMessage('');
-      setErrorMessage('CPF ou senha incorretos. Tente novamente.');
-      console.error(error.response.data);
+      setErrorMessage('Erro desconhecido. Tente novamente.');
+
+      console.error('Erro no login:', error); // Loga o erro
+      console.log('Erro detalhes:', error.response?.data); // Loga os detalhes do erro
     }
   };
 
@@ -75,4 +87,3 @@ const Login = () => {
 };
 
 export default Login;
-

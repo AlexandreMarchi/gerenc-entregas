@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');  // Importa bcrypt para criptografar a senha
+const bcrypt = require('bcrypt');
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -10,7 +10,8 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-    length: 11
+    minlength: 11,
+    maxlength: 11,
   },
   password: {
     type: String,
@@ -19,26 +20,23 @@ const UserSchema = new mongoose.Schema({
   role: {
     type: String,
     required: true,
-    enum: ['cliente', 'entregador'] 
+    enum: ['cliente', 'entregador']
   }
 });
 
-// Middleware para hash da senha antes de salvar o usuário
-UserSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next();
-
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
+// Método para hash da senha antes de salvar o usuário
+UserSchema.methods.hashPassword = async function (plainPassword) {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(plainPassword, salt);
+};
 
 // Método para comparar a senha fornecida com a senha armazenada
-UserSchema.methods.comparePassword = function (candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
+UserSchema.methods.comparePassword = async function (candidatePassword) {
+  try {
+    return await bcrypt.compare(candidatePassword, this.password);
+  } catch (error) {
+    throw new Error('Erro ao comparar a senha.');
+  }
 };
 
 module.exports = mongoose.model('User', UserSchema);

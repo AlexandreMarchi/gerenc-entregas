@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-require('dotenv').config(); // Carrega as variáveis de ambiente do arquivo .env
+require('dotenv').config();
 
 // Rota de registro
 router.post('/register', async (req, res) => {
@@ -12,55 +12,72 @@ router.post('/register', async (req, res) => {
 
     // Validar dados
     if (!name || !cpf || !password || !role) {
+      console.log('Dados inválidos:', req.body);
       return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
     }
 
-    // Criptografar a senha antes de salvar
+    if (cpf.length !== 11 || !/^\d{11}$/.test(cpf)) {
+      console.log('CPF inválido:', cpf);
+      return res.status(400).json({ message: 'O CPF deve conter exatamente 11 números.' });
+    }
+
+    const existingUser = await User.findOne({ cpf });
+    if (existingUser) {
+      console.log('Usuário já existe:', cpf);
+      return res.status(400).json({ message: 'Usuário já existe.' });
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Criar novo usuário
     const newUser = new User({
       name,
       cpf,
-      password: hashedPassword, // Salva a senha criptografada
+      password: hashedPassword,
       role
     });
 
-    // Salvar no banco de dados
     await newUser.save();
     res.status(201).json({ message: 'Usuário registrado com sucesso.' });
   } catch (error) {
+    console.error('Erro ao registrar usuário:', error);
     res.status(500).json({ message: 'Erro ao registrar usuário.', error });
   }
 });
 
 // Rota de login
 router.post('/login', async (req, res) => {
-  const { cpf, password } = req.body;
-
   try {
-    // Verificar se o usuário existe
+    const { cpf, password } = req.body;
+
+    // Validar dados
+    if (!cpf || !password) {
+      console.log('Dados inválidos para login:', req.body); // Loga os dados fornecidos no login
+      return res.status(400).json({ message: 'CPF e senha são obrigatórios.' });
+    }
+
     const user = await User.findOne({ cpf });
     if (!user) {
+      console.log('Usuário não encontrado para o CPF:', cpf); // Loga o CPF que não foi encontrado
       return res.status(400).json({ message: 'Usuário não encontrado.' });
     }
 
-    // Verificar a senha
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
+      console.log('Senha incorreta para o CPF:', cpf); // Loga o CPF para o qual a senha estava incorreta
       return res.status(400).json({ message: 'Senha incorreta.' });
     }
 
-    // Gerar token JWT
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
-      expiresIn: '1h'
-    });
+    const token = jwt.sign(
+      { id: user._id, role: user.role, name: user.name },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
 
-    // Resposta de sucesso com o token
-    res.status(200).json({ message: 'Login bem-sucedido!', token });
+    console.log('Login bem-sucedido para o CPF:', cpf); // Loga o CPF para login bem-sucedido
+    res.json({ token, role: user.role, name: user.name });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Erro no servidor. Tente novamente mais tarde.' });
+    console.error('Erro ao fazer login:', error); // Loga qualquer erro que ocorra
+    res.status(500).json({ message: 'Erro ao fazer login.', error });
   }
 });
 

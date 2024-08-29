@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './register.css'; // Importa o CSS
+import './style/register.css';
 
 const Register = () => {
   const [successMessage, setSuccessMessage] = useState('');
@@ -10,9 +10,18 @@ const Register = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     
+    const cpf = event.target.cpf.value;
+
+    // Verifica se o CPF tem exatamente 11 dígitos
+    if (cpf.length !== 11) {
+      setErrorMessage('O CPF deve conter exatamente 11 números.');
+      setSuccessMessage('');
+      return;
+    }
+
     const user = {
       name: event.target.name.value,
-      cpf: event.target.cpf.value,
+      cpf,
       password: event.target.password.value,
       role: event.target.role.value
     };
@@ -24,21 +33,26 @@ const Register = () => {
       setErrorMessage(''); // Limpa mensagens de erro, se houver
     } catch (error) {
       if (error.response) {
-        // A resposta do servidor foi recebida e é diferente de 2xx
         console.error('Erro ao registrar usuário:', error.response.data);
         setErrorMessage('Erro ao registrar usuário. Verifique os dados e tente novamente.');
         setSuccessMessage(''); // Limpa mensagem de sucesso, se houver
       } else if (error.request) {
-        // A solicitação foi feita, mas não houve resposta
         console.error('Nenhuma resposta recebida do servidor:', error.request);
         setErrorMessage('Nenhuma resposta recebida do servidor.');
         setSuccessMessage(''); // Limpa mensagem de sucesso, se houver
       } else {
-        // Erro ao configurar a solicitação
         console.error('Erro ao configurar a solicitação:', error.message);
         setErrorMessage('Erro ao configurar a solicitação.');
         setSuccessMessage(''); // Limpa mensagem de sucesso, se houver
       }
+    }
+  };
+
+  const handleCpfChange = (event) => {
+    const { value } = event.target;
+    // Permite apenas números e limita a 11 caracteres
+    if (/^\d*$/.test(value) && value.length <= 11) {
+      event.target.value = value;
     }
   };
 
@@ -51,7 +65,14 @@ const Register = () => {
         </label>
         <label>
           CPF:
-          <input type="text" name="cpf" required />
+          <input
+            type="text"
+            name="cpf"
+            required
+            onChange={handleCpfChange}
+            minLength={11}
+            maxLength={11}
+          />
         </label>
         <label>
           Senha:
