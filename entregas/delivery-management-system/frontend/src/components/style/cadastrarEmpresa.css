@@ -1,5 +1,5 @@
-.login-container {
-    max-width: 400px;
+.empresa-container {
+    max-width: 500px;
     margin: 0 auto;
     padding: 20px;
     background-color: #f4f4f4;
@@ -42,10 +42,10 @@
     margin-bottom: 15px;
   }
   
-  .btn-login {
+  .btn-cadastrar {
     width: 100%;
     padding: 10px;
-    background-color: #007BFF;
+    background-color: #3498db;
     color: white;
     border: none;
     border-radius: 5px;
@@ -53,8 +53,8 @@
     transition: background-color 0.3s;
   }
   
-  .btn-login:hover {
-    background-color: #0056b3;
+  .btn-cadastrar:hover {
+    background-color: #2980b9;
   }
 
   .btn-back {
@@ -63,7 +63,7 @@
     padding: 10px 20px;
     font-size: 16px;
     color: #fff;
-    background-color: #007BFF;
+    background-color: #3498db;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -71,5 +71,6 @@
   }
   
   .btn-back:hover {
-    background-color: #0056b3;
+    background-color: #2980b9;
   }
+  

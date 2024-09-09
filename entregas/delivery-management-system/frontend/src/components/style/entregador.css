@@ -20,7 +20,7 @@ h1, h2 {
 
 .options button {
   padding: 10px 20px;
-  background-color: #3498db;
+  background-color:#3498db;
   color: white;
   border: none;
   border-radius: 5px;
@@ -29,7 +29,7 @@ h1, h2 {
 }
 
 .options button:hover {
-  background-color: #2980b9;
+  background-color:#2980b9;
 }
 
 .delivery-list {
@@ -64,5 +64,44 @@ h1, h2 {
 }
 
 .btn-confirm:hover {
-  background-color: #2980b9;
+  background-color:  #2980b9;;
+}
+
+.error-message {
+  color: red;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+h3 {
+  margin: 0;
+}
+
+p {
+  margin: 5px 0;
+}
+.status-pendente {
+  color: red;
+}
+
+.status-aguardando {
+  color: orange;
+}
+
+.status-confirmada {
+  color: green;
+}
+
+.error-message {
+  color: red;
 }

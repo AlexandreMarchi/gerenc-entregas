@@ -5,6 +5,8 @@ import Home from './components/home';
 import Login from './components/login';
 import Entregador from './components/entregador';
 import Cliente from './components/cliente';
+import CadastrarEmpresa from './components/cadastrarEmpresa';
+import CadastrarEntrega from './components/cadastrarEntrega';
 
 
 const App = () => {
@@ -16,6 +18,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/entregador" element={<Entregador />} />
         <Route path="/cliente" element={<Cliente />} />
+        <Route path="/cadastrarEmpresa" element={<CadastrarEmpresa />} />
+        <Route path="/cadastrarEntrega" element={<CadastrarEntrega />} />
+
       </Routes>
     </Router>
   );
