@@ -60,3 +60,19 @@
   - `react-router-dom`: ^6.26.1
   - `react-scripts`: 5.0.1
   - `web-vitals`: ^2.1.4
+
+# Padrões de Projeto
+
+## Arquivo: `models/user.js`
+
+O arquivo `models/user.js` define o modelo `User` utilizando Mongoose para o gerenciamento de usuários no banco de dados. Vários padrões de projeto são aplicados neste arquivo para garantir uma estrutura de código eficiente e reutilizável.
+
+### 1. Padrão Singleton
+
+**Descrição**: O padrão Singleton assegura que exista uma única instância de um objeto, o que é essencial para garantir a consistência das operações.
+
+**Implementação**: No Mongoose, o modelo `User` é exportado como uma única instância através do comando `mongoose.model('User', UserSchema)`. Isso garante que todas as operações relacionadas ao usuário utilizem a mesma definição de esquema e instância.
+
+**Código**:
+```javascript
+module.exports = mongoose.model('User', UserSchema);
