@@ -61,7 +61,7 @@
   - `react-scripts`: 5.0.1
   - `web-vitals`: ^2.1.4
 
-# Padrões de Projeto no Projeto
+# Padrões de Projeto
 
 ## Arquivo: `models/user.js`
 
