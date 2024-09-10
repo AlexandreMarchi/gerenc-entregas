@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './style/entregador.css';
 
 const Entregador = () => {
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const name = params.get('name');
+  const name = localStorage.getItem('name');
   const navigate = useNavigate();
   const [entregas, setEntregas] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
@@ -60,6 +58,10 @@ const Entregador = () => {
     navigate('/cadastrarEntrega');
   };
 
+  const handleBack = () => {
+    navigate('/');
+  };
+
   return (
     <div className="container">
       <h1>Bem-vindo(a), entregador(a) {name}</h1>
@@ -92,6 +94,7 @@ const Entregador = () => {
           </li>
         ))}
       </ul>
+      <button onClick={handleBack} className="btn-back">Sair</button>
     </div>
   );
 };

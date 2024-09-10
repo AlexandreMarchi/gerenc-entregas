@@ -10,7 +10,6 @@ router.post('/register', async (req, res) => {
   try {
     const { name, cpf, password, role } = req.body;
 
-    // Validar dados
     if (!name || !cpf || !password || !role) {
       console.log('Dados inválidos:', req.body);
       return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
@@ -49,21 +48,20 @@ router.post('/login', async (req, res) => {
   try {
     const { cpf, password } = req.body;
 
-    // Validar dados
     if (!cpf || !password) {
-      console.log('Dados inválidos para login:', req.body); // Loga os dados fornecidos no login
+      console.log('Dados inválidos para login:', req.body); 
       return res.status(400).json({ message: 'CPF e senha são obrigatórios.' });
     }
 
     const user = await User.findOne({ cpf });
     if (!user) {
-      console.log('Usuário não encontrado para o CPF:', cpf); // Loga o CPF que não foi encontrado
+      console.log('Usuário não encontrado para o CPF:', cpf);
       return res.status(400).json({ message: 'Usuário não encontrado.' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      console.log('Senha incorreta para o CPF:', cpf); // Loga o CPF para o qual a senha estava incorreta
+      console.log('Senha incorreta para o CPF:', cpf);
       return res.status(400).json({ message: 'Senha incorreta.' });
     }
 
@@ -73,10 +71,10 @@ router.post('/login', async (req, res) => {
       { expiresIn: '1h' }
     );
 
-    console.log('Login bem-sucedido para o CPF:', cpf); // Loga o CPF para login bem-sucedido
+    console.log('Login bem-sucedido para o CPF:', cpf);
     res.json({ token, role: user.role, name: user.name });
   } catch (error) {
-    console.error('Erro ao fazer login:', error); // Loga qualquer erro que ocorra
+    console.error('Erro ao fazer login:', error);
     res.status(500).json({ message: 'Erro ao fazer login.', error });
   }
 });

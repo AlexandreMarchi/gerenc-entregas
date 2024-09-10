@@ -3,13 +3,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './style/cadastrarEmpresa.css';
 
-
-// Função para formatar o CNPJ para exibição
 const formatCNPJ = (cnpj) => {
-    const cleaned = cnpj.replace(/\D/g, ''); // Remove caracteres não numéricos
+    const cleaned = cnpj.replace(/\D/g, '');
     
     if (cleaned.length <= 14) {
-        return cleaned.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5'); // Formata o CNPJ
+        return cleaned.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, '$1.$2.$3/$4-$5');
     }
     return cleaned;
 };
@@ -29,7 +27,7 @@ const CadastrarEmpresa = () => {
     if (name === 'cnpj') {
       setFormData({
         ...formData,
-        [name]: formatCNPJ(value) // Formata o CNPJ para exibição
+        [name]: formatCNPJ(value)
       });
     } else {
       setFormData({ ...formData, [name]: value });
@@ -39,7 +37,7 @@ const CadastrarEmpresa = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const cleanedCNPJ = formData.cnpj.replace(/\D/g, ''); // Remove formatação antes de enviar
+      const cleanedCNPJ = formData.cnpj.replace(/\D/g, '');
       const response = await axios.post('http://localhost:5000/api/empresas/cadastrar', {
         ...formData,
         cnpj: cleanedCNPJ
@@ -85,7 +83,7 @@ const CadastrarEmpresa = () => {
             value={formData.cnpj}
             onChange={handleChange}
             required
-            maxLength={18} // Permite a formatação com caracteres especiais
+            maxLength={18}
           />
         </div>
         <div className="form-group">
@@ -99,7 +97,7 @@ const CadastrarEmpresa = () => {
             required
             minLength={8}
             maxLength={8}
-            pattern="\d{8}" // Valida o formato do CEP
+            pattern="\d{8}"
           />
         </div>
         <button type="submit" className="btn-cadastrar">Cadastrar Empresa</button>

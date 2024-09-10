@@ -12,7 +12,6 @@ const Register = () => {
     
     const cpf = event.target.cpf.value;
 
-    // Verifica se o CPF tem exatamente 11 dígitos
     if (cpf.length !== 11) {
       setErrorMessage('O CPF deve conter exatamente 11 números.');
       setSuccessMessage('');
@@ -30,27 +29,26 @@ const Register = () => {
       const response = await axios.post('http://localhost:5000/api/users/register', user);
       console.log('Usuário registrado com sucesso:', response.data);
       setSuccessMessage('Usuário registrado com sucesso!');
-      setErrorMessage(''); // Limpa mensagens de erro, se houver
+      setErrorMessage('');
     } catch (error) {
       if (error.response) {
         console.error('Erro ao registrar usuário:', error.response.data);
         setErrorMessage('Erro ao registrar usuário. Verifique os dados e tente novamente.');
-        setSuccessMessage(''); // Limpa mensagem de sucesso, se houver
+        setSuccessMessage(''); 
       } else if (error.request) {
         console.error('Nenhuma resposta recebida do servidor:', error.request);
         setErrorMessage('Nenhuma resposta recebida do servidor.');
-        setSuccessMessage(''); // Limpa mensagem de sucesso, se houver
+        setSuccessMessage('');
       } else {
         console.error('Erro ao configurar a solicitação:', error.message);
         setErrorMessage('Erro ao configurar a solicitação.');
-        setSuccessMessage(''); // Limpa mensagem de sucesso, se houver
+        setSuccessMessage('');
       }
     }
   };
 
   const handleCpfChange = (event) => {
     const { value } = event.target;
-    // Permite apenas números e limita a 11 caracteres
     if (/^\d*$/.test(value) && value.length <= 11) {
       event.target.value = value;
     }

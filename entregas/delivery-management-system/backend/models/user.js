@@ -24,13 +24,11 @@ const UserSchema = new mongoose.Schema({
   }
 });
 
-// Método para hash da senha antes de salvar o usuário
 UserSchema.methods.hashPassword = async function (plainPassword) {
   const salt = await bcrypt.genSalt(10);
   return await bcrypt.hash(plainPassword, salt);
 };
 
-// Método para comparar a senha fornecida com a senha armazenada
 UserSchema.methods.comparePassword = async function (candidatePassword) {
   try {
     return await bcrypt.compare(candidatePassword, this.password);

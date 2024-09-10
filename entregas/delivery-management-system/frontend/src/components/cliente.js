@@ -1,37 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './style/cliente.css';
+import { useNavigate } from 'react-router-dom'; 
 
 const Cliente = () => {
   const [deliveries, setDeliveries] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
+  const navigate = useNavigate();
+  const cpf = localStorage.getItem('cpf');
+  
   useEffect(() => {
     const fetchDeliveries = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:5000/api/deliveries/pending', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(`http://localhost:5000/api/entregas/listar/${cpf}`);
         setDeliveries(response.data);
       } catch (error) {
-        setErrorMessage('Erro ao carregar entregas pendentes.');
+        setErrorMessage('Nenhuma entrega pendente.');
         console.error(error.response?.data || error.message);
       }
     };
 
     fetchDeliveries();
-  }, []);
+  }, [cpf]);
 
   const handleConfirm = async (deliveryId) => {
     try {
       const token = localStorage.getItem('token');
-      await axios.post(
-        `http://localhost:5000/api/deliveries/confirm/${deliveryId}`,
-        {},
+
+      await axios.put(`http://localhost:5000/api/entregas/confirmar/${deliveryId}`,
+        { status: 'Confirmada' },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -39,12 +37,18 @@ const Cliente = () => {
         }
       );
       setSuccessMessage('Entrega confirmada com sucesso!');
-      setDeliveries(deliveries.filter((delivery) => delivery._id !== deliveryId));
+      setDeliveries(deliveries.map((delivery) => 
+        delivery.idEntrega === deliveryId ? { ...delivery, status: 'Confirmada' } : delivery
+      ));
     } catch (error) {
       setErrorMessage('Erro ao confirmar entrega.');
       console.error(error.response?.data || error.message);
     }
   };
+
+  const handleBack = () => {
+    navigate('/');
+  }
 
   return (
     <div className="cliente-container">
@@ -55,16 +59,23 @@ const Cliente = () => {
         <ul>
           {deliveries.map((delivery) => (
             <li key={delivery._id}>
-              <p>Entrega ID: {delivery._id}</p>
-              <p>Produto: {delivery.productName}</p>
-              <p>Data de Entrega: {new Date(delivery.deliveryDate).toLocaleDateString()}</p>
-              <button onClick={() => handleConfirm(delivery._id)}>Confirmar Entrega</button>
+              <p>Entrega ID: {delivery.idEntrega}</p>
+              <p>Produto: {delivery.descricao}</p>
+              <p>Status: {delivery.status}</p>
+              <p>Data de Entrega: {new Date(delivery.dataPrevista).toLocaleDateString()}</p>
+              <button 
+                onClick={() => handleConfirm(delivery.idEntrega)} 
+                disabled={delivery.status === 'Confirmada'}
+              >
+                Confirmar Entrega
+              </button>
             </li>
           ))}
         </ul>
       ) : (
-        <p>Nenhuma entrega pendente.</p>
+        <p></p>
       )}
+      <button onClick={handleBack} className="btn-back">Sair</button>
     </div>
   );
 };

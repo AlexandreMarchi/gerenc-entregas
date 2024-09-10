@@ -13,15 +13,14 @@ const CadastrarEntrega = () => {
     descricao: '',
     peso: '',
     dataPrevista: '',
-    empresa: '' // Adicionando o campo empresa ao formulário
+    empresa: ''
   });
 
-  const [empresas, setEmpresas] = useState([]); // Estado para armazenar as empresas
+  const [empresas, setEmpresas] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  // Função para carregar as empresas ao montar o componente
   useEffect(() => {
     const fetchEmpresas = async () => {
       try {
@@ -55,7 +54,7 @@ const CadastrarEntrega = () => {
         descricao: '',
         peso: '',
         dataPrevista: '',
-        empresa: '' // Resetar campo empresa
+        empresa: ''
       });
       console.log(response.data);
     } catch (error) {
@@ -165,7 +164,6 @@ const CadastrarEntrega = () => {
             required
           />
         </div>
-        {/* Campo de seleção de empresa */}
         <div className="form-group">
           <label htmlFor="empresa">Empresa:</label>
           <select

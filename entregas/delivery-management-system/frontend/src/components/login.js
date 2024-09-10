@@ -24,13 +24,14 @@ const Login = () => {
       setSuccessMessage('Login realizado com sucesso!');
       setErrorMessage('');
 
-      const { token, role, name } = response.data;
+      const { token, role, name, cpf } = response.data;
 
-      // Armazena o token e nome no localStorage
       localStorage.setItem('token', token);
       localStorage.setItem('name', name);
+      localStorage.setItem('cpf', cpf);
 
-      console.log('Resposta do login:', response.data); // Loga a resposta do servidor
+      console.log('Resposta do login:', response.data);
+      console.log('CPF armazenado:', cpf);
 
       setTimeout(() => {
         if (role === 'entregador') {
@@ -41,10 +42,10 @@ const Login = () => {
       }, 1500);
     } catch (error) {
       setSuccessMessage('');
-      setErrorMessage('Erro desconhecido. Tente novamente.');
+      setErrorMessage('Erro ao fazer login. Verifique os dados e tente novamente');
 
-      console.error('Erro no login:', error); // Loga o erro
-      console.log('Erro detalhes:', error.response?.data); // Loga os detalhes do erro
+      console.error('Erro no login:', error);
+      console.log('Erro detalhes:', error.response?.data); 
     }
   };
 
